@@ -743,20 +743,19 @@ public class GraphHopper implements GraphHopperAPI {
             dataAccessType = DAType.MMAP_RO;
 
         GHDirectory dir = new GHDirectory(ghLocation, dataAccessType);
-        GraphExtension ext = encodingManager.needsTurnCostsSupport()
-                ? new TurnCostExtension() : new GraphExtension.NoOpExtension();
 
         if (lmFactoryDecorator.isEnabled())
             initLMAlgoFactoryDecorator();
 
+        List<CHProfile> chProfiles;
         if (chFactoryDecorator.isEnabled()) {
             initCHAlgoFactoryDecorator();
-            ghStorage = new GraphHopperStorage(chFactoryDecorator.getCHProfiles(), dir, encodingManager, hasElevation(), ext);
+            chProfiles = chFactoryDecorator.getCHProfiles();
         } else {
-            ghStorage = new GraphHopperStorage(dir, encodingManager, hasElevation(), ext);
+            chProfiles = Collections.emptyList();
         }
 
-        ghStorage.setSegmentSize(defaultSegmentSize);
+        ghStorage = new GraphHopperStorage(chProfiles, dir, encodingManager, hasElevation(), encodingManager.needsTurnCostsSupport(), defaultSegmentSize);
 
         if (!new File(graphHopperFolder).exists())
             return false;
@@ -961,7 +960,7 @@ public class GraphHopper implements GraphHopperAPI {
     public Weighting createTurnWeighting(Graph graph, Weighting weighting, TraversalMode tMode, double uTurnCosts) {
         FlagEncoder encoder = weighting.getFlagEncoder();
         if (encoder.supports(TurnWeighting.class) && tMode.isEdgeBased())
-            return new TurnWeighting(weighting, (TurnCostExtension) graph.getExtension(), uTurnCosts);
+            return new TurnWeighting(weighting, graph.getTurnCostExtension(), uTurnCosts);
         return weighting;
     }
 

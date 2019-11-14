@@ -94,14 +94,15 @@ public class BidirectionalRoutingTest {
         weighting = new FastestWeighting(encoder);
         chProfiles = Arrays.asList(CHProfile.nodeBased(weighting), CHProfile.edgeBased(weighting, TurnWeighting.INFINITE_U_TURN_COSTS));
         graph = createGraph();
-        chGraph = graph.getCHGraph(!traversalMode.isEdgeBased() ? chProfiles.get(0) : chProfiles.get(1));
     }
 
     private void preProcessGraph() {
         graph.freeze();
         if (prepareCH) {
-            pch = new PrepareContractionHierarchies(chGraph);
+            CHProfile chProfile = !traversalMode.isEdgeBased() ? chProfiles.get(0) : chProfiles.get(1);
+            pch = PrepareContractionHierarchies.fromGraphHopperStorage(graph, chProfile);
             pch.doWork();
+            chGraph = graph.getCHGraph(chProfile);
         }
         if (prepareLM) {
             lm = new PrepareLandmarks(dir, graph, weighting, 16, 8);
@@ -340,7 +341,7 @@ public class BidirectionalRoutingTest {
     }
 
     private GraphHopperStorage createGraph() {
-        GraphHopperStorage gh = new GraphHopperStorage(chProfiles, dir, encodingManager, false, new TurnCostExtension());
+        GraphHopperStorage gh = new GraphHopperStorage(chProfiles, dir, encodingManager, false, true);
         gh.create(1000);
         return gh;
     }

@@ -58,6 +58,11 @@ public final class ShallowImmutablePointList extends PointList {
     }
 
     @Override
+    public String toString() {
+        return "[" + fromOffset + ", " + toOffset + "]";
+    }
+
+    @Override
     public double getLatitude(int index) {
         if (index > getSize())
             throw new ArrayIndexOutOfBoundsException(ERR_MSG + " index:" + index + ", size:" + getSize());
@@ -158,11 +163,6 @@ public final class ShallowImmutablePointList extends PointList {
 
     @Override
     public void trimToSize(int newSize) {
-        throw new UnsupportedOperationException(IMMUTABLE_ERR);
-    }
-
-    @Override
-    public void compress() {
         throw new UnsupportedOperationException(IMMUTABLE_ERR);
     }
 

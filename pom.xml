@@ -19,11 +19,11 @@
         <log4j.version>1.2.17</log4j.version>
         <commons-compress.version>1.18</commons-compress.version>
 
-        <!-- for the correct jackson and guava versions see https://github.com/dropwizard/dropwizard/blob/release/1.3.x/dropwizard-bom/pom.xml -->
-        <!-- make also sure that the dropwizard version is working with 1.3.5 of dropwizard-configurable-assets-bundle used in web -->
-        <dropwizard.version>1.3.12</dropwizard.version>
-        <jackson.version>2.9.9</jackson.version>
-        <guava.version>24.1.1-jre</guava.version>
+        <!-- try to keep jackson and guava versions in sync with those used by dropwizard -->
+        <!-- also make sure that the dropwizard version is working with 1.3.5 of dropwizard-configurable-assets-bundle used in web -->
+        <dropwizard.version>2.0.0</dropwizard.version>
+        <jackson.version>2.10.1</jackson.version>
+        <guava.version>28.1-jre</guava.version>
 
         <directions-api-client.version>0.10.1-3</directions-api-client.version>
         <maven.compiler.target>1.8</maven.compiler.target>

@@ -59,6 +59,7 @@ public class CarFlagEncoder extends AbstractFlagEncoder {
                 properties.getDouble("speed_factor", 5),
                 properties.getBool("turn_costs", false) ? 1 : 0);
         this.properties = properties;
+        this.badSurfaceSpeed = (int) properties.getLong("bad_surface_speed", 30);
         this.speedTwoDirections = properties.getBool("speed_two_directions", false);
         this.setBlockFords(properties.getBool("block_fords", true));
         this.setBlockByDefault(properties.getBool("block_barriers", true));
@@ -140,8 +141,6 @@ public class CarFlagEncoder extends AbstractFlagEncoder {
         // forestry stuff
         defaultSpeedMap.put("track", 15);
 
-        // limit speed on bad surfaces to 30 km/h
-        badSurfaceSpeed = 30;
         destinationSpeed = 5;
         maxPossibleSpeed = 140;
         speedDefault = defaultSpeedMap.get("secondary");
